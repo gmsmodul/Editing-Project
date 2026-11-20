@@ -17,10 +17,10 @@ const DESKTOP_PAGE_ORDER: PageId[] = [
   'kanban_tech',
   'handover_tech',
   'gantt',
+  'tasks',
   'calendar',
   'workload',
   'analytics',
-  'tasks',
 ];
 
 const MOBILE_PAGE_ORDER: PageId[] = [
@@ -35,9 +35,9 @@ const MOBILE_PAGE_ORDER: PageId[] = [
   'approval_tech',
   'handover_tech',
   'gantt',
+  'tasks',
   'workload',
   'analytics',
-  'tasks',
 ];
 
 export function getPageDirection(

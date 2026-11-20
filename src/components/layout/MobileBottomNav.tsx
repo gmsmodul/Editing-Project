@@ -24,7 +24,7 @@ import {
   formatRelativeTimeId,
   getWorkItemAssigneeIds,
 } from '../../utils/formatters';
-import { NAV_ITEMS, NAV_SECTION_META } from './Sidebar';
+import { NAV_ITEMS } from './Sidebar';
 import { useBottomSheetMotion } from '../../hooks/useBottomSheetMotion';
 import { playUiMotionSound } from '../../utils/uiMotionSound';
 import type { PageId } from '../../types';
@@ -130,17 +130,17 @@ export const MobileBottomNav: React.FC = () => {
   }> = [
     {
       id: 'overview',
-      label: 'Dasbor Project',
+      label: 'Dashboard',
       icon: Home,
       dot: stageCounts.intake > 0,
     },
     {
       id: 'kanban_video',
-      label: 'Kanban Eksekusi',
+      label: 'Progress',
       icon: Kanban,
       dot: stageCounts.kanban_video + stageCounts.kanban_tech > 0,
     },
-    { id: 'calendar', label: 'Kalender Tim', icon: Calendar, dot: unreadNotifCount > 0 },
+    { id: 'calendar', label: 'Calendar', icon: Calendar, dot: unreadNotifCount > 0 },
   ];
 
   const primaryIds = new Set(primarySlots.map((s) => s.id));
@@ -213,7 +213,7 @@ export const MobileBottomNav: React.FC = () => {
     const items: Array<{ label: string; action: () => void }> = [];
     if (isAdminProject || isProjectLead) {
       items.push({
-        label: '1. Project Baru (Dasbor)',
+        label: '1. Project Baru (Dashboard)',
         action: () => {
           setActivePage('overview');
         },
@@ -360,72 +360,54 @@ export const MobileBottomNav: React.FC = () => {
               {/* Subview: Main Navigation List */}
               {menuSubview === 'nav' && (
                 <div className="overflow-y-auto p-2 space-y-0.5 overscroll-contain">
-                  {popupModules.map((item, idx) => {
+                  {popupModules.map((item) => {
                     const Icon = item.icon;
                     const isCurrent = activePage === item.id;
                     const badge = getModuleBadge(item.id);
-                    const prevSection = popupModules[idx - 1]?.section;
-                    const isSectionStart = idx === 0 || item.section !== prevSection;
-                    const sectionMeta = NAV_SECTION_META[item.section];
                     const isTechItem = false;
 
                     return (
-                      <React.Fragment key={item.id}>
-                        {isSectionStart && (
-                          <div className={idx > 0 ? 'mt-1.5 pt-1.5 border-t border-black/[0.10] dark:border-white/[0.10]' : ''}>
-                            <div
-                              className={`px-3 pb-1 text-[10px] font-semibold uppercase tracking-wider flex items-center gap-1.5 ${
-                                sectionMeta.labelClass || 'text-[#8A8D98] dark:text-gray-400'
-                              }`}
-                            >
-                              {sectionMeta.dotClass && (
-                                <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${sectionMeta.dotClass}`} />
-                              )}
-                              <span>{sectionMeta.label}</span>
-                            </div>
-                          </div>
-                        )}
-                        <button
-                          type="button"
-                          onClick={() => handleSelectPage(item.id)}
-                          className={`touch-target-44 w-full flex items-center justify-between px-3 py-2 rounded-full text-left transition-all duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] cursor-pointer ${
-                            isCurrent
-                              ? isTechItem
-                                ? 'bg-[#0284C7] text-white font-semibold shadow-[0_6px_16px_-6px_rgba(2,132,199,0.55)]'
-                                : 'bg-[#ee2e65] text-white font-semibold shadow-[0_6px_16px_-6px_rgba(238,46,101,0.55)]'
-                              : 'text-[#1C1D21] dark:text-gray-200 hover:bg-[#F4F5F8] dark:hover:bg-white/[0.06] font-medium'
-                          }`}
-                        >
-                          <div className="flex items-center gap-2.5 min-w-0">
-                            <Icon
-                              className={`w-4 h-4 shrink-0 ${
-                                isCurrent
-                                  ? 'text-white stroke-[2.2px]'
-                                  : isTechItem
-                                    ? 'text-[#0369A1] dark:text-sky-300 stroke-[1.8px]'
-                                    : 'text-[#1C1D21] dark:text-gray-300 stroke-[1.8px]'
-                              }`}
-                            />
-                            <span className="text-[13px] truncate">{item.label}</span>
-                          </div>
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => handleSelectPage(item.id)}
+                        className={`touch-target-44 w-full flex items-center justify-between px-3 py-2 rounded-full text-left transition-all duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] cursor-pointer ${
+                          isCurrent
+                            ? isTechItem
+                              ? 'bg-[#0284C7] text-white font-semibold shadow-[0_6px_16px_-6px_rgba(2,132,199,0.55)]'
+                              : 'bg-[#ee2e65] text-white font-semibold shadow-[0_6px_16px_-6px_rgba(238,46,101,0.55)]'
+                            : 'text-[#1C1D21] dark:text-gray-200 hover:bg-[#F4F5F8] dark:hover:bg-white/[0.06] font-medium'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <Icon
+                            className={`w-4 h-4 shrink-0 ${
+                              isCurrent
+                                ? 'text-white stroke-[2.2px]'
+                                : isTechItem
+                                  ? 'text-[#0369A1] dark:text-sky-300 stroke-[1.8px]'
+                                  : 'text-[#1C1D21] dark:text-gray-300 stroke-[1.8px]'
+                            }`}
+                          />
+                          <span className="text-[13px] truncate">{item.label}</span>
+                        </div>
 
-                          {badge !== null && (
-                            <span
-                              className={`min-w-[22px] h-[20px] px-1.5 rounded-full text-[10.5px] font-bold flex items-center justify-center shrink-0 tabular-nums ${
-                                isCurrent
-                                  ? isTechItem
-                                    ? 'bg-white text-[#0284C7]'
-                                    : 'bg-white text-[#ee2e65]'
-                                  : isTechItem
-                                    ? 'bg-[#0284C7] text-white'
-                                    : 'bg-[#EF4444] text-white'
-                              }`}
-                            >
-                              {badge}
-                            </span>
-                          )}
-                        </button>
-                      </React.Fragment>
+                        {badge !== null && (
+                          <span
+                            className={`min-w-[22px] h-[20px] px-1.5 rounded-full text-[10.5px] font-bold flex items-center justify-center shrink-0 tabular-nums ${
+                              isCurrent
+                                ? isTechItem
+                                  ? 'bg-white text-[#0284C7]'
+                                  : 'bg-white text-[#ee2e65]'
+                                : isTechItem
+                                  ? 'bg-[#0284C7] text-white'
+                                  : 'bg-[#EF4444] text-white'
+                            }`}
+                          >
+                            {badge}
+                          </span>
+                        )}
+                      </button>
                     );
                   })}
 

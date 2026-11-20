@@ -18,33 +18,21 @@ import { ACCESS_ROLE_META, getRoutedManagerForDiscipline } from '../../constants
 import { playUiMotionSound } from '../../utils/uiMotionSound';
 import type { PageId } from '../../types';
 
-export type NavSection = 'dashboard' | 'monitoring' | 'crew';
-
 export const NAV_ITEMS: Array<{
   id: PageId;
   label: string;
   shortLabel: string;
   icon: React.ComponentType<{ className?: string }>;
-  section: NavSection;
 }> = [
-  { id: 'overview', label: 'Dasbor Project', shortLabel: 'Dasbor', icon: LayoutDashboard, section: 'dashboard' },
-  { id: 'project_manager', label: 'Project Manager', shortLabel: 'Project Mgr', icon: ClipboardCheck, section: 'dashboard' },
-  { id: 'kanban_video', label: 'Kanban Eksekusi', shortLabel: 'Kanban', icon: Kanban, section: 'dashboard' },
-  { id: 'gantt', label: 'Gantt Terpadu', shortLabel: 'Gantt', icon: GanttChart, section: 'monitoring' },
-  { id: 'calendar', label: 'Kalender Tim', shortLabel: 'Kalender', icon: Calendar, section: 'monitoring' },
-  { id: 'workload', label: 'Waktu & Beban Kru', shortLabel: 'Beban Kru', icon: Timer, section: 'monitoring' },
-  { id: 'analytics', label: 'Analitik & Laporan', shortLabel: 'Laporan', icon: BarChart3, section: 'monitoring' },
-  { id: 'tasks', label: 'Task', shortLabel: 'Task', icon: ListChecks, section: 'crew' },
+  { id: 'overview', label: 'Dashboard', shortLabel: 'Dashboard', icon: LayoutDashboard },
+  { id: 'project_manager', label: 'Project Manager', shortLabel: 'Project Mgr', icon: ClipboardCheck },
+  { id: 'kanban_video', label: 'Progress', shortLabel: 'Progress', icon: Kanban },
+  { id: 'gantt', label: 'Schedule', shortLabel: 'Schedule', icon: GanttChart },
+  { id: 'tasks', label: 'Task', shortLabel: 'Task', icon: ListChecks },
+  { id: 'calendar', label: 'Calendar', shortLabel: 'Calendar', icon: Calendar },
+  { id: 'workload', label: 'Load', shortLabel: 'Load', icon: Timer },
+  { id: 'analytics', label: 'Report', shortLabel: 'Report', icon: BarChart3 },
 ];
-
-export const NAV_SECTION_META: Record<
-  NavSection,
-  { label: string; dotClass?: string; labelClass?: string }
-> = {
-  dashboard: { label: 'Utama' },
-  monitoring: { label: 'Monitoring & Jadwal' },
-  crew: { label: 'Ruang Mandiri Kru' },
-};
 
 // Re-export Kanban icon reference so downstream imports stay clean if needed
 export { Kanban };
@@ -168,12 +156,12 @@ export const Sidebar: React.FC = () => {
         </button>
       </div>
 
-      {/* Main Navigation — Exact gmsmodul/UI-KIT sliding white active pill & separated division sections */}
+      {/* Main Navigation — Exact gmsmodul/UI-KIT sliding white active pill */}
       <nav
         aria-label="Navigasi Utama"
         className="flex-1 min-h-0 overflow-y-auto custom-sidebar-scrollbar pr-0.5"
       >
-        <div ref={navListRef} className="relative space-y-1 pb-2">
+        <div ref={navListRef} className="relative space-y-1 pt-1 pb-2">
           <span
             aria-hidden="true"
             className={`pointer-events-none absolute left-0 right-0 top-0 rounded-lg bg-white dark:bg-[#121418] shadow-xs dark:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)] transition-[transform,height,opacity] duration-[220ms] ease-[cubic-bezier(0.23,1,0.32,1)] ${
@@ -185,90 +173,64 @@ export const Sidebar: React.FC = () => {
             }}
           />
 
-          {NAV_ITEMS.map((item, idx) => {
+          {NAV_ITEMS.map((item) => {
             const Icon = item.icon;
             const isActive = activePage === item.id;
             const showOverloadHint = item.id === 'workload' && overloadedCount > 0;
             const showActiveTimerCount = item.id === 'workload' && activeTimerCount > 0;
             const badge = getBadge(item.id);
-            const prevSection = NAV_ITEMS[idx - 1]?.section;
-            const isSectionStart = idx === 0 || item.section !== prevSection;
-            const sectionMeta = NAV_SECTION_META[item.section];
             const isTechItem = false;
 
             return (
-              <React.Fragment key={item.id}>
-                {isSectionStart && (
-                  <div
-                    className={
-                      idx === 0
-                        ? 'pt-1'
-                        : 'pt-2.5 mt-2.5 border-t border-black/[0.10] dark:border-white/[0.08]'
-                    }
-                  >
-                    {sidebarOpen && (
-                      <div
-                        className={`relative z-10 px-3 pb-1.5 text-[10.5px] font-semibold uppercase tracking-wider flex items-center gap-1.5 ${
-                          sectionMeta.labelClass || 'text-gray-500 dark:text-gray-400'
-                        }`}
-                      >
-                        {sectionMeta.dotClass && (
-                          <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${sectionMeta.dotClass}`} />
-                        )}
-                        <span>{sectionMeta.label}</span>
-                      </div>
-                    )}
-                  </div>
-                )}
-                <button
-                  ref={(el) => {
-                    itemRefs.current[item.id] = el;
-                  }}
-                  type="button"
-                  onClick={() => {
-                    playUiMotionSound('tick');
-                    setActivePage(item.id);
-                  }}
-                  title={!sidebarOpen ? item.label : undefined}
-                  className={`relative z-10 w-full flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] transition-colors duration-150 cursor-pointer whitespace-nowrap ${
+              <button
+                key={item.id}
+                ref={(el) => {
+                  itemRefs.current[item.id] = el;
+                }}
+                type="button"
+                onClick={() => {
+                  playUiMotionSound('tick');
+                  setActivePage(item.id);
+                }}
+                title={!sidebarOpen ? item.label : undefined}
+                className={`relative z-10 w-full flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] transition-colors duration-150 cursor-pointer whitespace-nowrap ${
+                  isActive
+                    ? 'text-[#1C1D21] dark:text-white font-semibold'
+                    : 'text-[#5A5D67] dark:text-gray-300 hover:text-[#1C1D21] dark:hover:text-white font-medium'
+                } ${!sidebarOpen ? 'justify-center px-0' : ''}`}
+              >
+                <Icon
+                  className={`w-[17px] h-[17px] shrink-0 transition-colors ${
                     isActive
-                      ? 'text-[#1C1D21] dark:text-white font-semibold'
-                      : 'text-[#5A5D67] dark:text-gray-300 hover:text-[#1C1D21] dark:hover:text-white font-medium'
-                  } ${!sidebarOpen ? 'justify-center px-0' : ''}`}
-                >
-                  <Icon
-                    className={`w-[17px] h-[17px] shrink-0 transition-colors ${
-                      isActive
-                        ? isTechItem
-                          ? 'text-[#0284C7]'
-                          : 'text-[#ee2e65]'
-                        : 'text-[#646772] dark:text-gray-400'
-                    }`}
-                  />
-                  {sidebarOpen && <span className="truncate flex-1 text-left">{item.label}</span>}
-                  {sidebarOpen && badge && (
-                    <span
-                      className={`text-[11px] font-mono tabular-nums font-bold shrink-0 ${badge.toneClass}`}
-                    >
-                      {badge.text}
-                    </span>
-                  )}
-                  {sidebarOpen && showOverloadHint && (
-                    <span
-                      className="text-[11px] font-mono tabular-nums font-semibold text-[#C11448] dark:text-[#fbc2d4] shrink-0 flex items-center gap-0.5"
-                      title={`${overloadedCount} kru melebihi batas beban kerja`}
-                    >
-                      <AlertTriangle className="w-3 h-3" />
-                      {overloadedCount}
-                    </span>
-                  )}
-                  {sidebarOpen && !showOverloadHint && showActiveTimerCount && (
-                    <span className="text-[11px] font-mono tabular-nums font-semibold text-[#6C5DD3] dark:text-violet-300 shrink-0">
-                      {activeTimerCount} aktif
-                    </span>
-                  )}
-                </button>
-              </React.Fragment>
+                      ? isTechItem
+                        ? 'text-[#0284C7]'
+                        : 'text-[#ee2e65]'
+                      : 'text-[#646772] dark:text-gray-400'
+                  }`}
+                />
+                {sidebarOpen && <span className="truncate flex-1 text-left">{item.label}</span>}
+                {sidebarOpen && badge && (
+                  <span
+                    className={`text-[11px] font-mono tabular-nums font-bold shrink-0 ${badge.toneClass}`}
+                  >
+                    {badge.text}
+                  </span>
+                )}
+                {sidebarOpen && showOverloadHint && (
+                  <span
+                    className="text-[11px] font-mono tabular-nums font-semibold text-[#C11448] dark:text-[#fbc2d4] shrink-0 flex items-center gap-0.5"
+                    title={`${overloadedCount} kru melebihi batas beban kerja`}
+                  >
+                    <AlertTriangle className="w-3 h-3" />
+                    {overloadedCount}
+                  </span>
+                )}
+                {sidebarOpen && !showOverloadHint && showActiveTimerCount && (
+                  <span className="text-[11px] font-mono tabular-nums font-semibold text-[#6C5DD3] dark:text-violet-300 shrink-0">
+                    {activeTimerCount} aktif
+                  </span>
+                )}
+              </button>
             );
           })}
         </div>

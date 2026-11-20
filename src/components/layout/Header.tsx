@@ -33,20 +33,20 @@ import { playUiMotionSound } from '../../utils/uiMotionSound';
 import type { PageId } from '../../types';
 
 const PAGE_TITLES: Record<PageId, string> = {
-  intake: 'Dasbor Project',
+  intake: 'Dashboard',
   project_manager: 'Project Manager',
   approval_video: 'Project Manager',
-  kanban_video: 'Kanban Eksekusi',
+  kanban_video: 'Progress',
   handover_video: 'Project Manager',
   approval_tech: 'Project Manager',
-  kanban_tech: 'Kanban Eksekusi',
+  kanban_tech: 'Progress',
   handover_tech: 'Project Manager',
-  overview: 'Dasbor Project',
-  gantt: 'Gantt Terpadu',
+  overview: 'Dashboard',
+  gantt: 'Schedule',
   tasks: 'Task',
-  calendar: 'Kalender Tim',
-  workload: 'Waktu & Beban Kru',
-  analytics: 'Analitik & Laporan',
+  calendar: 'Calendar',
+  workload: 'Load',
+  analytics: 'Report',
 };
 
 type SearchCategory = 'Semua' | 'Menu' | 'Project' | 'Task';
