@@ -1,0 +1,6 @@
+{
+  "name": "ServoMedia — Multimedia Production OS",
+  "description": "Aplikasi real-time manajemen project shooting & editing, tugas rutin dan fleksibel, Kanban project, Gantt chart terpadu, kalender tim, pelacakan waktu nyata, proteksi overload kru, serta analitik dan laporan otomatis akhir bulan untuk departemen multimedia.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

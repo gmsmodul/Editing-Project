@@ -1,0 +1,950 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --color-primary-50: #fef1f5;
+  --color-primary-100: #fde0e9;
+  --color-primary-200: #fbc2d4;
+  --color-primary-300: #f895b5;
+  --color-primary-400: #f45d8e;
+  --color-primary-500: #ee2e65;
+  --color-primary-600: #ee2e65;
+  --color-primary-700: #c11448;
+  --color-primary-800: #9d113c;
+  --color-primary-900: #831236;
+  --color-primary-950: #4e051c;
+}
+
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-fluid: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html,
+body {
+  font-family: var(--font-sans);
+  color: #1c1d21;
+  background-color: #e8e9f0;
+  overscroll-behavior-y: contain;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   375px Mobile & Touch Responsive Foundations (Exact gmsmodul/UI-KIT Standard)
+   1. Big numbers stay one-line, tabular, and size-capped
+   2. Inputs >= 16px below 640px to prevent iOS Safari auto-zoom
+   3. Touch targets >= 44px strictly for coarse pointers (mouse stays dense)
+   4. Bottom bar & content safe-area padding via env(safe-area-inset-bottom)
+   ========================================================================== */
+.kpi-container {
+  container-type: inline-size;
+}
+
+.kpi-value {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(1.25rem, 5.5vw, 1.875rem);
+  line-height: 1.15;
+  max-width: 100%;
+}
+
+.kpi-container .kpi-value {
+  font-size: clamp(1.125rem, 12.5cqi, 1.875rem);
+}
+
+@media (max-width: 639px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not(.no-ios-zoom-guard),
+  textarea:not(.no-ios-zoom-guard),
+  select:not(.no-ios-zoom-guard) {
+    font-size: 16px;
+  }
+}
+
+@media (pointer: coarse) {
+  .touch-target-44,
+  button[aria-haspopup="listbox"],
+  nav[aria-label="Navigasi Mobile"] button {
+    min-height: 44px;
+  }
+}
+
+.safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ==========================================================================
+   Global Pill Capsule Scrollbars (Exact gmsmodul/UI-KIT 5px Violet Standard)
+   ========================================================================== */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*:not(.no-scrollbar)::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+html::-webkit-scrollbar-button,
+body::-webkit-scrollbar-button,
+*:not(.no-scrollbar)::-webkit-scrollbar-button,
+*:not(.no-scrollbar)::-webkit-scrollbar-button:single-button,
+*:not(.no-scrollbar)::-webkit-scrollbar-button:double-button,
+*:not(.no-scrollbar)::-webkit-scrollbar-button:start,
+*:not(.no-scrollbar)::-webkit-scrollbar-button:end,
+*:not(.no-scrollbar)::-webkit-scrollbar-button:decrement,
+*:not(.no-scrollbar)::-webkit-scrollbar-button:increment,
+*:not(.no-scrollbar)::-webkit-scrollbar-button:vertical,
+*:not(.no-scrollbar)::-webkit-scrollbar-button:horizontal {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+*:not(.no-scrollbar)::-webkit-scrollbar-track {
+  background: #ede9fe;
+  border-radius: 9999px;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+*:not(.no-scrollbar)::-webkit-scrollbar-thumb {
+  background-color: #6852ec;
+  border-radius: 9999px;
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover,
+*:not(.no-scrollbar)::-webkit-scrollbar-thumb:hover {
+  background-color: #543de2;
+}
+
+html::-webkit-scrollbar-corner,
+body::-webkit-scrollbar-corner,
+*:not(.no-scrollbar)::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.custom-sidebar-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.custom-sidebar-scrollbar::-webkit-scrollbar-track {
+  background: #e8eaef;
+  border-radius: 9999px;
+}
+.custom-sidebar-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #71737d;
+  border-radius: 9999px;
+}
+.custom-sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #52545f;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.slide-indicator-thumb {
+  transition:
+    width 240ms var(--ease-out),
+    background-color 200ms var(--ease-out),
+    box-shadow 200ms var(--ease-out),
+    scale 240ms var(--ease-out);
+  will-change: transform, scale, width;
+}
+
+.ui-scrollbar-violet::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.ui-scrollbar-violet::-webkit-scrollbar-track {
+  background: #ede9fe;
+  border-radius: 9999px;
+}
+.ui-scrollbar-violet::-webkit-scrollbar-thumb {
+  background-color: #6852ec;
+  border-radius: 9999px;
+}
+.ui-scrollbar-violet::-webkit-scrollbar-thumb:hover {
+  background-color: #543de2;
+}
+
+.ui-scrollbar-rose::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.ui-scrollbar-rose::-webkit-scrollbar-track {
+  background: #fef1f5;
+  border-radius: 9999px;
+}
+.ui-scrollbar-rose::-webkit-scrollbar-thumb {
+  background-color: #ee2e65;
+  border-radius: 9999px;
+}
+.ui-scrollbar-rose::-webkit-scrollbar-thumb:hover {
+  background-color: #c11448;
+}
+
+.ui-scrollbar-dark::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.ui-scrollbar-dark::-webkit-scrollbar-track {
+  background: #eaecef;
+  border-radius: 9999px;
+}
+.ui-scrollbar-dark::-webkit-scrollbar-thumb {
+  background-color: #1c1d21;
+  border-radius: 9999px;
+}
+
+.dark html::-webkit-scrollbar-track,
+.dark body::-webkit-scrollbar-track,
+.dark *:not(.no-scrollbar)::-webkit-scrollbar-track {
+  background: #181b21;
+}
+.dark html::-webkit-scrollbar-thumb,
+.dark body::-webkit-scrollbar-thumb,
+.dark *:not(.no-scrollbar)::-webkit-scrollbar-thumb {
+  background-color: #363b47;
+}
+.dark html::-webkit-scrollbar-thumb:hover,
+.dark body::-webkit-scrollbar-thumb:hover,
+.dark *:not(.no-scrollbar)::-webkit-scrollbar-thumb:hover {
+  background-color: #4b5263;
+}
+.dark .custom-sidebar-scrollbar::-webkit-scrollbar-track {
+  background: #15181e;
+}
+.dark .custom-sidebar-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #363b47;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  html,
+  body,
+  *:not(.no-scrollbar) {
+    scrollbar-width: thin;
+    scrollbar-color: #6852ec #ede9fe;
+  }
+}
+
+/* ==========================================================================
+   Exact gmsmodul/ServoLution-app & UI-KIT Motion & Micro-Interaction Primitives
+   Compositor-only individual properties (`opacity`, `translate`, `scale`, `filter`)
+   so existing Tailwind transform utilities never collide.
+   ========================================================================== */
+@keyframes ui-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ui-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes ui-page {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+    scale: 0.95;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+    filter: blur(0px);
+  }
+}
+
+@keyframes ui-section-enter {
+  from {
+    opacity: 0;
+    translate: 0 10px;
+    scale: 0.95;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+    filter: blur(0px);
+  }
+}
+
+@keyframes bottom-sheet-mobile {
+  0% {
+    opacity: 0.35;
+    translate: 0 100%;
+    scale: 0.965;
+  }
+  55% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
+}
+
+@keyframes bottom-sheet-desktop {
+  0% {
+    opacity: 0;
+    translate: 0 20px;
+    scale: 0.95;
+    filter: blur(4px);
+  }
+  60% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+    filter: blur(0px);
+  }
+}
+
+@keyframes ui-sheet-item {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes sheet-handle-settle {
+  0% {
+    opacity: 0.35;
+    scale: 0.52 1;
+  }
+  100% {
+    opacity: 1;
+    scale: 1 1;
+  }
+}
+
+@keyframes menu-fold-up {
+  0% {
+    opacity: 0;
+    translate: 0 18px;
+    scale: 0.95;
+    filter: blur(3px);
+  }
+  60% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+    filter: blur(0px);
+  }
+}
+
+@keyframes menu-fold-down {
+  0% {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1 1;
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    translate: 0 16px;
+    scale: 0.95;
+    filter: blur(3px);
+  }
+}
+
+@keyframes ui-pop {
+  from {
+    opacity: 0;
+    translate: 0 -6px;
+    scale: 0.95;
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+    filter: blur(0px);
+  }
+}
+
+@keyframes ui-pop-up {
+  from {
+    opacity: 0;
+    translate: 0 6px;
+    scale: 0.95;
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+    filter: blur(0px);
+  }
+}
+
+@keyframes ui-slide-down {
+  from {
+    opacity: 0;
+    translate: 0 -8px;
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    filter: blur(0px);
+  }
+}
+
+@keyframes ui-toast-in {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+    scale: 0.95;
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+    filter: blur(0px);
+  }
+}
+
+@keyframes ui-drawer-right {
+  from {
+    opacity: 0.15;
+    translate: 44px 0;
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    filter: blur(0px);
+  }
+}
+
+@keyframes ui-check {
+  0% {
+    scale: 0.95;
+    opacity: 0;
+  }
+  65% {
+    scale: 1.06;
+    opacity: 1;
+  }
+  100% {
+    scale: 1;
+    opacity: 1;
+  }
+}
+
+@keyframes ui-shake {
+  0%, 100% {
+    translate: 0 0;
+  }
+  20% {
+    translate: -5px 0;
+  }
+  40% {
+    translate: 5px 0;
+  }
+  60% {
+    translate: -3px 0;
+  }
+  80% {
+    translate: 2px 0;
+  }
+}
+
+@keyframes ui-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.animate-ui-fade {
+  animation: ui-fade 200ms var(--ease-out) both;
+}
+
+.animate-ui-fade-out {
+  animation: ui-fade-out 160ms var(--ease-out) both;
+  pointer-events: none;
+}
+
+.animate-menu-fold-up {
+  transform-origin: bottom left;
+  animation: menu-fold-up 240ms var(--ease-out) both;
+  will-change: transform, translate, scale, opacity;
+}
+
+.animate-menu-fold-up > * {
+  animation: ui-sheet-item 200ms var(--ease-out) both;
+}
+.animate-menu-fold-up > *:nth-child(2) {
+  animation-delay: 45ms;
+}
+
+.animate-menu-fold-down {
+  transform-origin: bottom left;
+  animation: menu-fold-down 180ms var(--ease-out) both;
+  pointer-events: none;
+}
+
+.animate-ui-page {
+  animation: ui-page 240ms var(--ease-out) both;
+}
+
+.animate-bottom-sheet {
+  animation: bottom-sheet-mobile 260ms var(--ease-out) both;
+  will-change: transform, translate, opacity;
+}
+
+@media (min-width: 640px) {
+  .animate-bottom-sheet {
+    animation: bottom-sheet-desktop 240ms var(--ease-out) both;
+  }
+}
+
+.animate-modal-sheet,
+.animate-ui-modal {
+  animation: bottom-sheet-desktop 240ms var(--ease-out) both;
+  will-change: transform, translate, opacity;
+}
+
+.animate-bottom-sheet > *:not([data-sheet-handle="true"]),
+.animate-modal-sheet > *:not([data-sheet-handle="true"]) {
+  animation: ui-sheet-item 200ms var(--ease-out) both;
+}
+.animate-bottom-sheet > *:nth-child(2):not([data-sheet-handle="true"]),
+.animate-modal-sheet > *:nth-child(2):not([data-sheet-handle="true"]) {
+  animation-delay: 45ms;
+}
+.animate-bottom-sheet > *:nth-child(3):not([data-sheet-handle="true"]),
+.animate-modal-sheet > *:nth-child(3):not([data-sheet-handle="true"]) {
+  animation-delay: 90ms;
+}
+.animate-bottom-sheet > *:nth-child(4):not([data-sheet-handle="true"]),
+.animate-modal-sheet > *:nth-child(4):not([data-sheet-handle="true"]) {
+  animation-delay: 135ms;
+}
+.animate-bottom-sheet > *:nth-child(n + 5):not([data-sheet-handle="true"]),
+.animate-modal-sheet > *:nth-child(n + 5):not([data-sheet-handle="true"]) {
+  animation-delay: 180ms;
+}
+
+/* Modal sheet background depth pull-back (Exact ServoLution-app signature effect) */
+.app-shell-container {
+  transition: scale 280ms var(--ease-out), filter 260ms var(--ease-out);
+  transform-origin: center top;
+}
+
+body:has([data-modal-sheet-backdrop="true"]:not([data-closing="true"])) .app-shell-container {
+  scale: 0.982;
+  filter: brightness(0.96);
+}
+
+.animate-sheet-handle {
+  animation: sheet-handle-settle 240ms 50ms var(--ease-out) both;
+}
+
+.animate-ui-pop {
+  animation: ui-pop 180ms var(--ease-out) both;
+}
+
+.animate-ui-pop-up {
+  animation: ui-pop-up 180ms var(--ease-out) both;
+}
+
+.animate-ui-slide-down {
+  animation: ui-slide-down 200ms var(--ease-out) both;
+}
+
+.animate-ui-toast,
+.animate-fade-in {
+  animation: ui-toast-in 240ms var(--ease-out) both;
+}
+
+.animate-ui-drawer-right {
+  animation: ui-drawer-right 260ms var(--ease-out) both;
+}
+
+.animate-ui-check {
+  animation: ui-check 200ms var(--ease-out) both;
+}
+
+.animate-ui-shake {
+  animation: ui-shake 260ms var(--ease-out) both;
+}
+
+.ui-skeleton-shimmer {
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 37%, #f3f4f6 63%);
+  background-size: 200% 100%;
+  animation: ui-shimmer 1.35s var(--ease-out) infinite;
+}
+
+.dark .ui-skeleton-shimmer {
+  background: linear-gradient(90deg, #1b1e24 25%, #252a33 50%, #1b1e24 75%);
+  background-size: 200% 100%;
+}
+
+/* Staggered Own-Beat Section Cascade (+45ms/beat, sub-300ms) with Sensory Blur & scale(0.95) */
+.ui-stagger > * {
+  animation: ui-section-enter 220ms var(--ease-out) both;
+}
+.ui-stagger > *:nth-child(2) {
+  animation-delay: 45ms;
+}
+.ui-stagger > *:nth-child(3) {
+  animation-delay: 90ms;
+}
+.ui-stagger > *:nth-child(4) {
+  animation-delay: 135ms;
+}
+.ui-stagger > *:nth-child(5) {
+  animation-delay: 180ms;
+}
+.ui-stagger > *:nth-child(n + 6) {
+  animation-delay: 225ms;
+}
+
+/* Global Baseline Silky Motion & Zero-Jump Tactile Press (Emil Kowalski 200ms ease-out) */
+#root button,
+#root [role="button"],
+#root a[href],
+#root summary,
+.ui-kit-root button,
+.ui-kit-root [role="button"],
+.ui-kit-root a[href],
+.ui-kit-root summary {
+  transition-property: color, background-color, border-color, box-shadow, opacity, scale, translate, transform, filter;
+  transition-duration: 200ms;
+  transition-timing-function: var(--ease-out);
+}
+
+#root button:not(:disabled):not(.no-press):active,
+#root [role="button"]:not([aria-disabled="true"]):not(.no-press):active,
+#root a[href]:not(.no-press):active,
+.ui-kit-root button:not(:disabled):not(.no-press):active,
+.ui-kit-root [role="button"]:not([aria-disabled="true"]):not(.no-press):active,
+.ui-kit-root a[href]:not(.no-press):active {
+  scale: 0.97;
+  transition-duration: 85ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-ui-fade,
+  .animate-ui-fade-out,
+  .animate-menu-fold-up,
+  .animate-menu-fold-up > *,
+  .animate-menu-fold-down,
+  .animate-ui-page,
+  .animate-bottom-sheet,
+  .animate-modal-sheet,
+  .animate-ui-modal,
+  .animate-bottom-sheet > *,
+  .animate-modal-sheet > *,
+  .animate-sheet-handle,
+  .animate-ui-pop,
+  .animate-ui-pop-up,
+  .animate-ui-slide-down,
+  .animate-ui-toast,
+  .animate-fade-in,
+  .animate-ui-drawer-right,
+  .animate-ui-check,
+  .animate-ui-shake,
+  .ui-skeleton-shimmer,
+  .ui-stagger > * {
+    animation: none !important;
+    filter: none !important;
+  }
+
+  .app-shell-container,
+  body:has([data-modal-sheet-backdrop="true"]:not([data-closing="true"])) .app-shell-container,
+  .slide-indicator-thumb {
+    transition: none !important;
+    scale: 1 !important;
+    filter: none !important;
+  }
+
+  #root *,
+  #root *::before,
+  #root *::after,
+  .ui-kit-root *,
+  .ui-kit-root *::before,
+  .ui-kit-root *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 10mm;
+  }
+  body {
+    background: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  aside,
+  header,
+  .no-print {
+    display: none !important;
+  }
+  main {
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+  }
+}
+
+/* ==========================================================================
+   Obsidian Dark Theme Layer (Exact gmsmodul/UI-KIT Base #121418 / #15181E / #1B1E24)
+   ========================================================================== */
+.dark body {
+  background-color: #0b0d10;
+  color: #f3f4f6;
+}
+
+.dark body:has([data-modal-sheet-backdrop="true"]:not([data-closing="true"])) .app-shell-container {
+  filter: brightness(0.88);
+}
+
+.dark :is(.ui-kit-root, [data-modal-sheet-backdrop="true"], [data-ui-portal="true"]) :is(
+  .bg-white,
+  .bg-white\/95,
+  .bg-white\/90,
+  .bg-white\/80,
+  .bg-white\/70
+):not([class*="dark:bg-"]):not([data-dark-preserve="true"]):not([data-dark-preserve="true"] *) {
+  background-color: #15181e;
+}
+
+.dark :is(.ui-kit-root, [data-modal-sheet-backdrop="true"], [data-ui-portal="true"]) :is(
+  .bg-gray-50,
+  .bg-gray-50\/70,
+  .bg-gray-50\/80,
+  .bg-gray-50\/50,
+  .bg-slate-50,
+  .bg-\[\#FAFBFD\],
+  .bg-\[\#F8F9FC\]
+):not([class*="dark:bg-"]):not([data-dark-preserve="true"]):not([data-dark-preserve="true"] *) {
+  background-color: #181b21;
+}
+
+.dark :is(.ui-kit-root, [data-modal-sheet-backdrop="true"], [data-ui-portal="true"]) :is(
+  .bg-gray-100,
+  .bg-gray-100\/80,
+  .bg-gray-100\/90,
+  .bg-gray-100\/70,
+  .bg-gray-200,
+  .bg-slate-100,
+  .bg-\[\#F4F5F8\],
+  .bg-\[\#F6F7FA\]
+):not([class*="dark:bg-"]):not([data-dark-preserve="true"]):not([data-dark-preserve="true"] *) {
+  background-color: #1b1e24;
+}
+
+.dark :is(.ui-kit-root, [data-modal-sheet-backdrop="true"], [data-ui-portal="true"]) :is(
+  .bg-\[\#FEF1F5\],
+  .bg-\[\#FEF1F5\]\/90,
+  .bg-\[\#FEF1F5\]\/80,
+  .bg-\[\#FEF1F5\]\/60,
+  .bg-\[\#FEF1F5\]\/55,
+  .bg-primary-50,
+  .bg-primary-50\/60
+):not([class*="dark:bg-"]):not([data-dark-preserve="true"]):not([data-dark-preserve="true"] *) {
+  background-color: rgba(238, 46, 101, 0.14);
+}
+
+.dark :is(.ui-kit-root, [data-modal-sheet-backdrop="true"], [data-ui-portal="true"]) :is(
+  .bg-\[\#E6F9F0\],
+  .bg-\[\#E6F9F0\]\/80
+):not([class*="dark:bg-"]):not([data-dark-preserve="true"]):not([data-dark-preserve="true"] *) {
+  background-color: rgba(16, 185, 129, 0.13);
+}
+
+.dark :is(.ui-kit-root, [data-modal-sheet-backdrop="true"], [data-ui-portal="true"]) :is(
+  .bg-\[\#F0EFFC\],
+  .bg-\[\#F0EFFC\]\/80
+):not([class*="dark:bg-"]):not([data-dark-preserve="true"]):not([data-dark-preserve="true"] *) {
+  background-color: rgba(108, 93, 211, 0.16);
+}
+
+.dark :is(.ui-kit-root, [data-modal-sheet-backdrop="true"], [data-ui-portal="true"]) :is(
+  .bg-\[\#FFF5E6\],
+  .bg-\[\#FFF5E6\]\/80
+):not([class*="dark:bg-"]):not([data-dark-preserve="true"]):not([data-dark-preserve="true"] *) {
+  background-color: rgba(245, 158, 11, 0.14);
+}
+
+.dark :is(.ui-kit-root, [data-modal-sheet-backdrop="true"], [data-ui-portal="true"]) :is(
+  .bg-\[\#FFECEB\],
+  .bg-\[\#FFECEB\]\/35
+):not([class*="dark:bg-"]):not([data-dark-preserve="true"]):not([data-dark-preserve="true"] *) {
+  background-color: rgba(239, 68, 68, 0.14);
+}
+
+.dark :is(.ui-kit-root, [data-modal-sheet-backdrop="true"], [data-ui-portal="true"]) :is(
+  .border-gray-100,
+  .border-gray-200,
+  .border-gray-200\/80,
+  .border-gray-300,
+  .border-gray-300\/90,
+  .border-gray-300\/85,
+  .border-slate-200,
+  .border-black\/\[0\.12\],
+  .border-black\/\[0\.14\],
+  .border-black\/\[0\.11\],
+  .border-black\/\[0\.10\],
+  .border-black\/\[0\.09\],
+  .border-black\/\[0\.08\],
+  .border-black\/\[0\.07\],
+  .border-black\/\[0\.06\],
+  .border-black\/\[0\.05\]
+):not([class*="dark:border-"]):not([data-dark-preserve="true"]):not([data-dark-preserve="true"] *) {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark :is(.ui-kit-root, [data-modal-sheet-backdrop="true"], [data-ui-portal="true"]) :is(
+  .divide-gray-100,
+  .divide-gray-200,
+  .divide-gray-300,
+  .divide-black\/\[0\.08\],
+  .divide-black\/\[0\.07\],
+  .divide-black\/\[0\.06\]
+):not([class*="dark:divide-"]):not([data-dark-preserve="true"]):not([data-dark-preserve="true"] *) > :not(:last-child) {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark :is(.ui-kit-root, [data-modal-sheet-backdrop="true"], [data-ui-portal="true"]) :is(
+  .text-gray-950,
+  .text-gray-900,
+  .text-slate-900,
+  .text-\[\#1C1D21\]
+):not([class*="dark:text-"]):not([data-dark-preserve="true"]):not([data-dark-preserve="true"] *) {
+  color: #f3f4f6;
+}
+
+.dark :is(.ui-kit-root, [data-modal-sheet-backdrop="true"], [data-ui-portal="true"]) :is(
+  .text-gray-800,
+  .text-gray-700,
+  .text-slate-700,
+  .text-slate-800,
+  .text-\[\#525660\]
+):not([class*="dark:text-"]):not([data-dark-preserve="true"]):not([data-dark-preserve="true"] *) {
+  color: #d1d5db;
+}
+
+.dark :is(.ui-kit-root, [data-modal-sheet-backdrop="true"], [data-ui-portal="true"]) :is(
+  .text-gray-600,
+  .text-gray-500,
+  .text-gray-400,
+  .text-slate-500,
+  .text-\[\#5A5D67\],
+  .text-\[\#646772\],
+  .text-\[\#6E717A\],
+  .text-\[\#8A8D98\],
+  .text-\[\#8C9099\]
+):not([class*="dark:text-"]):not([data-dark-preserve="true"]):not([data-dark-preserve="true"] *) {
+  color: #9ca3af;
+}
+
+.dark :is(.ui-kit-root, [data-modal-sheet-backdrop="true"], [data-ui-portal="true"]) :is(
+  .text-\[\#9D113C\],
+  .text-\[\#C11448\],
+  .text-\[\#7D3A51\],
+  .text-primary-800,
+  .text-primary-700
+):not([class*="dark:text-"]):not([data-dark-preserve="true"]):not([data-dark-preserve="true"] *) {
+  color: #fbc2d4;
+}
+
+.dark :is(.ui-kit-root, [data-modal-sheet-backdrop="true"], [data-ui-portal="true"]) :is(
+  .text-\[\#146C43\],
+  .text-\[\#35684E\],
+  .text-emerald-800
+):not([class*="dark:text-"]):not([data-dark-preserve="true"]):not([data-dark-preserve="true"] *) {
+  color: #6ee7b7;
+}
+
+.dark :is(.ui-kit-root, [data-modal-sheet-backdrop="true"], [data-ui-portal="true"]) :is(
+  .text-\[\#3F3B99\],
+  .text-\[\#5854A8\]
+):not([class*="dark:text-"]):not([data-dark-preserve="true"]):not([data-dark-preserve="true"] *) {
+  color: #c4b5fd;
+}
+
+.dark :is(.ui-kit-root, [data-modal-sheet-backdrop="true"], [data-ui-portal="true"]) :is(
+  .text-\[\#8C5811\],
+  .text-\[\#7A592A\],
+  .text-amber-800
+):not([class*="dark:text-"]):not([data-dark-preserve="true"]):not([data-dark-preserve="true"] *) {
+  color: #fcd34d;
+}
+
+.dark :is(.ui-kit-root, [data-modal-sheet-backdrop="true"], [data-ui-portal="true"]) :is(
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+  textarea,
+  select
+):not([class*="dark:bg-"]):not([data-dark-preserve="true"]):not([data-dark-preserve="true"] *) {
+  background-color: #181b21;
+  color: #f3f4f6;
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.dark :is(.ui-kit-root, [data-modal-sheet-backdrop="true"], [data-ui-portal="true"]) :is(
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+  textarea
+)::placeholder {
+  color: #6b7280;
+}
+
+.dark :is(.ui-kit-root, [data-modal-sheet-backdrop="true"], [data-ui-portal="true"]) :is(
+  .hover\:bg-gray-50,
+  .hover\:bg-gray-100,
+  .hover\:bg-\[\#FAFBFD\],
+  .hover\:bg-\[\#F7F8FA\],
+  .hover\:bg-\[\#F4F5F8\]
+):hover:not([class*="dark:hover:"]):not([data-dark-preserve="true"]):not([data-dark-preserve="true"] *) {
+  background-color: #22262e;
+}
